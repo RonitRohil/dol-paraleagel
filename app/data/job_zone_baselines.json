@@ -1,0 +1,37 @@
+{
+  "1": {
+    "label": "Little or no preparation needed",
+    "education_baseline": "less_than_hs",
+    "experience_min_years": 0.0,
+    "experience_max_years": 0.25,
+    "svp_note": "SVP 1-2 (short demonstration up to 1 month)"
+  },
+  "2": {
+    "label": "Some preparation needed",
+    "education_baseline": "hs",
+    "experience_min_years": 0.25,
+    "experience_max_years": 1.0,
+    "svp_note": "SVP 3-4 (over 1 month up to 6 months)"
+  },
+  "3": {
+    "label": "Medium preparation needed",
+    "education_baseline": "associates",
+    "experience_min_years": 1.0,
+    "experience_max_years": 2.0,
+    "svp_note": "SVP 5-6 (over 6 months up to 2 years)"
+  },
+  "4": {
+    "label": "Considerable preparation needed",
+    "education_baseline": "bachelors",
+    "experience_min_years": 2.0,
+    "experience_max_years": 4.0,
+    "svp_note": "SVP 7 (over 2 years up to 4 years)"
+  },
+  "5": {
+    "label": "Extensive preparation needed",
+    "education_baseline": "bachelors",
+    "experience_min_years": 4.0,
+    "experience_max_years": 10.0,
+    "svp_note": "SVP 8-9 (over 4 years up to 10+ years)"
+  }
+}
