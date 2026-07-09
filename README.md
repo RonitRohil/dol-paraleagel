@@ -19,12 +19,12 @@ factors by comparing the job's stated requirements to the occupation's O\*NET
 "normal" baseline (derived from the SOC's **Job Zone**, itself derived from an SVP —
 Specific Vocational Preparation — range):
 
-| Factor | Rule |
-|---|---|
-| Experience | at/below normal range: +0, low end: +1, high end: +2, exceeds range: +3 |
-| Education | at/below normal: +0, one category above: +1, more than one above: +2 |
-| Special skills/requirements | beyond entry-level (certifications, non-English language, etc.): +1 to +2 |
-| Supervisory duties | supervises others: +1, unless supervision is customary for the occupation itself (e.g. "Managers"/"Supervisors" titles): +0 |
+| Factor                      | Rule                                                                                                                        |
+| --------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| Experience                  | at/below normal range: +0, low end: +1, high end: +2, exceeds range: +3                                                     |
+| Education                   | at/below normal: +0, one category above: +1, more than one above: +2                                                        |
+| Special skills/requirements | beyond entry-level (certifications, non-English language, etc.): +1 to +2                                                   |
+| Supervisory duties          | supervises others: +1, unless supervision is customary for the occupation itself (e.g. "Managers"/"Supervisors" titles): +0 |
 
 Total points (base 1 + all factor points), capped at 4, map directly to
 Level I–IV.
@@ -41,23 +41,44 @@ Job Zones files), which maps ~1,000 O\*NET-SOC codes to their Job Zone (1–5).
 ## API
 
 - `GET /health` — liveness check
-- `GET /occupations/search?q=<text>` — search embedded SOC titles to find a `soc_code`
+- `GET /occupations/search?q=<text>` — search embedded SOC titles to find a `socCode`
 - `POST /wage-level/determine` — main endpoint, request body:
 
 ```json
 {
-  "soc_code": "15-1252.00",
-  "required_education": "masters",
-  "required_experience_years": 5,
-  "supervises_others": true,
-  "special_skills": ["Kubernetes"],
-  "foreign_language_required": false,
-  "number_supervised": 3
+  "jobTitle": "Software Engineer",
+  "socCode": "15-1252",
+  "workLocation": {
+    "state": "California",
+    "city": "San Jose"
+  },
+  "education": "Bachelor",
+  "experienceYears": 3,
+  "specialSkills": ["Java", "Spring Boot", "AWS"],
+  "foreignLanguageRequired": false,
+  "supervisoryDuties": false,
+  "numberSupervised": 0,
+  "employmentType": "Full-time"
 }
 ```
 
-`required_education` is one of: `less_than_hs`, `hs`, `associates`, `bachelors`,
-`masters`, `doctorate`, `professional`.
+Field notes:
+
+- `socCode` accepts either the plain 6-digit SOC code (`15-1252`) or the full
+  O\*NET-SOC code with suffix (`15-1252.00`) — it falls back to the `.00` base
+  occupation automatically.
+- `education` is case-insensitive free text (`"Bachelor"`, `"Bachelor's"`,
+  `"Master's Degree"`, `"PhD"`, `"High School"`, etc.) normalized internally to:
+  `less_than_hs`, `hs`, `associates`, `bachelors`, `masters`, `doctorate`,
+  `professional`.
+- `jobTitle`, `workLocation`, and `employmentType` are optional, captured for
+  context, and echoed back in the response — they are **not** used in the level
+  calculation. DOL wage _level_ is location/employment-type independent; only the
+  dollar wage _amount_ (out of scope here) varies by geography.
+- Snake_case field names (`soc_code`, `required_education`,
+  `required_experience_years`, `supervises_others`, `special_skills`,
+  `foreign_language_required`, `number_supervised`) are also accepted as aliases,
+  for backward compatibility.
 
 Interactive docs available at `/docs` once running.
 
